@@ -20,9 +20,9 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd proyecto-devops
-            git pull origin main
-            # Construimos una imagen con un ID único basado en el commit
+            cd ~/proyecto-devops
+            git fetch origin main
+            git reset --hard origin/main
             docker build -t proyecto-devops-web:${{ github.sha }} .
-            # Actualizamos el servicio para que use esa imagen única y específica
             docker service update --force --image proyecto-devops-web:${{ github.sha }} devops_web
+            docker service ps devops_web
