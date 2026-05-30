@@ -23,5 +23,8 @@ jobs:
             cd proyecto-devops
             git pull origin main
             docker build -t proyecto-devops-web .
+            # Eliminamos el servicio viejo para forzar el reinicio
+            docker stack rm devops || true
+            sleep 5
             docker stack deploy -c docker-compose.yml devops
             docker service ls
