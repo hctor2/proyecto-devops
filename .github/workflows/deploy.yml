@@ -1,0 +1,27 @@
+name: Deploy EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Deploy por SSH hacia AWS EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd proyecto-devops
+            git pull origin main
+            docker build -t proyecto-devops-web .
+            docker stack deploy -c docker-compose.yml devops
+            docker service ls
