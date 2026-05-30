@@ -22,8 +22,7 @@ jobs:
           script: |
             cd proyecto-devops
             git pull origin main
-            # Construimos la imagen nuevamente
+            # Construimos la imagen nueva
             docker build -t proyecto-devops-web:latest .
-            # Forzamos la actualización del servicio "web" (el nombre de tu servicio)
-            # El flag --force hace que Docker reinicie los contenedores sí o sí
+            # Forzamos la actualización del servicio usando el nombre correcto
             docker service update --force --image proyecto-devops-web:latest devops_web
