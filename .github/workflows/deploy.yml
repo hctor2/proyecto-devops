@@ -22,7 +22,7 @@ jobs:
           script: |
             cd proyecto-devops
             git pull origin main
-            # Construimos la imagen nueva
-            docker build -t proyecto-devops-web:latest .
-            # Forzamos la actualización del servicio usando el nombre correcto
-            docker service update --force --image proyecto-devops-web:latest devops_web
+            # Construimos una imagen con un ID único basado en el commit
+            docker build -t proyecto-devops-web:${{ github.sha }} .
+            # Actualizamos el servicio para que use esa imagen única y específica
+            docker service update --force --image proyecto-devops-web:${{ github.sha }} devops_web
