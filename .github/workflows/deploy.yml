@@ -22,9 +22,7 @@ jobs:
           script: |
             cd proyecto-devops
             git pull origin main
-            docker build -t proyecto-devops-web .
-            # Eliminamos el servicio viejo para forzar el reinicio
-            docker stack rm devops || true
-            sleep 5
-            docker stack deploy -c docker-compose.yml devops
-            docker service ls
+            # Construimos con un identificador único basado en el commit
+            docker build -t proyecto-devops-web:${{ github.sha }} .
+            # Actualizamos el servicio para que use esta imagen específica
+            docker service update --image proyecto-devops-web:${{ github.sha }} devops_web
